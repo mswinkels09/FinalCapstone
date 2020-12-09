@@ -1,27 +1,27 @@
 [
     {
-        "model": "rareapi.Listing_Type",
+        "model": "finalcapstoneapi.Listing_Type",
         "pk": 1,
         "fields": {
             "name": "Ebay: Auction"
         }
     },
     {
-        "model": "rareapi.Listing_Type",
+        "model": "finalcapstoneapi.Listing_Type",
         "pk": 2,
         "fields": {
             "name": "Ebay: Buy It Now"
         }
     },
     {
-        "model": "rareapi.Listing_Type",
+        "model": "finalcapstoneapi.Listing_Type",
         "pk": 3,
         "fields": {
             "name": "Facebook Marketplace"
         }
     },
     {
-        "model": "rareapi.Listing_Type",
+        "model": "finalcapstoneapi.Listing_Type",
         "pk": 4,
         "fields": {
             "name": "Other"

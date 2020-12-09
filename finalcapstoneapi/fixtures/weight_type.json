@@ -1,6 +1,6 @@
 [
     {
-        "model": "rareapi.Weight_Type",
+        "model": "finalcapstoneapi.Weight_Type",
         "pk": 1,
         "fields": {
             "type": "Books",
@@ -8,11 +8,19 @@
         }
     },
     {
-        "model": "rareapi.Weight_Type",
+        "model": "finalcapstoneapi.Weight_Type",
         "pk": 2,
         "fields": {
             "type": "Misc.",
             "percentage": 1.09
+        }
+    },
+    {
+        "model": "finalcapstoneapi.Weight_Type",
+        "pk": 3,
+        "fields": {
+            "type": "N/A",
+            "percentage": 1
         }
     }
 ]

@@ -11,7 +11,7 @@ class Item(models.Model):
     listing_type = models.ForeignKey("Listing_Type", on_delete=models.CASCADE)
     item_weight = models.FloatField()
     weight_type = models.ForeignKey("Weight_Type", on_delete=models.CASCADE)
-    notes = models.CharField(max_length=255,)
+    notes = models.CharField(max_length=255, null=True)
 
     item_cost = models.FloatField()
     shipping_cost = models.FloatField(blank=True, null=True)

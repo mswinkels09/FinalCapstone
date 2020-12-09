@@ -1,20 +1,20 @@
 [
     {
-        "model": "rareapi.Work_Type",
+        "model": "finalcapstoneapi.Work_Type",
         "pk": 1,
         "fields": {
             "type": "Supply Run"
         }
     },
     {
-        "model": "rareapi.Work_Type",
+        "model": "finalcapstoneapi.Work_Type",
         "pk": 2,
         "fields": {
             "type": "Inventory"
         }
     },
     {
-        "model": "rareapi.Work_Type",
+        "model": "finalcapstoneapi.Work_Type",
         "pk": 3,
         "fields": {
             "type": "Home"

@@ -1,6 +1,6 @@
 [
     {
-        "model": "rareapi.Hours_Worked",
+        "model": "finalcapstoneapi.Hours_Worked",
         "pk": 1,
         "fields": {
             "user_id": 1,
