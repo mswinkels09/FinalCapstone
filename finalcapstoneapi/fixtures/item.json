@@ -1,0 +1,24 @@
+[
+    {
+        "model": "rareapi.Category",
+        "pk": 1,
+        "fields": {
+            "user": 1,
+            "title": "12 inch Baby Yoda The Mandalorian Master Stuffed Doll Plush Toys Black Friday US SAL",
+            "unique_item_id": 264954766269,
+            "category_id": 1,
+            "listing_type_id": 2,
+            "item_weight": 165,
+            "weight_type": 3,
+            "notes": null,
+            "item_cost": 2,
+            "shipping_cost": null,
+            "item_paid": null,
+            "final_value_fee": null,
+            "listing_fee": 0.30,
+            "sold_date": null,
+            "date_listed": "2020-12-09",
+            "returned": "False"
+        }
+    }
+]

@@ -1,0 +1,18 @@
+[
+    {
+        "model": "rareapi.Weight_Type",
+        "pk": 1,
+        "fields": {
+            "type": "Books",
+            "percentage": 0.59
+        }
+    },
+    {
+        "model": "rareapi.Weight_Type",
+        "pk": 2,
+        "fields": {
+            "type": "Misc.",
+            "percentage": 1.09
+        }
+    }
+]

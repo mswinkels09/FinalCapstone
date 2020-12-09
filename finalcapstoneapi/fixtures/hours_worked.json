@@ -1,0 +1,12 @@
+[
+    {
+        "model": "rareapi.Hours_Worked",
+        "pk": 1,
+        "fields": {
+            "user_id": 1,
+            "date": "2020-11-28",
+            "hours": 4.5,
+            "work_type": 2
+        }
+    }
+]
