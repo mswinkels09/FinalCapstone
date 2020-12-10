@@ -1,3 +1,12 @@
 {
-    "python.linting.pylintEnabled": true
+    "python.linting.pylintEnabled": true,
+    "python.pythonPath": "/home/mswinkels/.local/share/virtualenvs/finalcapstone-xGc8Dmvb/bin/python",
+    "sqltools.connections": [
+        {
+            "previewLimit": 50,
+            "driver": "SQLite",
+            "name": "capstonedb",
+            "database": "db.sqlite3"
+        }
+    ]
 }
