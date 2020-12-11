@@ -30,7 +30,7 @@ class Supply_Type(ViewSet):
 
 
     def retrieve(self, request, pk=None):
-        """Handle GET request to one cupply_Type"""
+        """Handle GET request to one Supply_Type"""
 
         try:
             supply_Type = Supply_Type.objects.get(pk=pk)
