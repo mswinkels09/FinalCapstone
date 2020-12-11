@@ -17,7 +17,7 @@ class Supply_TypeSerializer(serializers.ModelSerializer):
         fields = ('id', 'name')
 
 
-class Supply_Type(ViewSet):
+class Supply_Types(ViewSet):
 
     def list(self, request):
         """Handle GET requests to supply_Type resource"""
