@@ -24,4 +24,4 @@ class Item(models.Model):
     item_paid = models.FloatField(blank=True, null=True)
     final_value_fee = models.FloatField(blank=True, null=True)
     sold_date = models.DateField(auto_now=False, auto_now_add=False, blank=True, null=True)
-    returned = models.BooleanField()
+    returned = models.BooleanField(blank=True, null=True)

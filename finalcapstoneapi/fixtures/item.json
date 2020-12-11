@@ -20,5 +20,27 @@
             "date_listed": "2020-12-09",
             "returned": "False"
         }
+    },
+    {
+        "model": "finalcapstoneapi.Item",
+        "pk": 2,
+        "fields": {
+            "user_id": 1,
+            "title": "SAMPLE2",
+            "unique_item_id": 26,
+            "category_id": 1,
+            "listing_type_id": 2,
+            "item_weight": 165,
+            "weight_type_id": 3,
+            "notes": null,
+            "item_cost": 2,
+            "shipping_cost": null,
+            "item_paid": null,
+            "final_value_fee": null,
+            "listing_fee": 0.30,
+            "sold_date": "2020-12-11",
+            "date_listed": "2020-12-09",
+            "returned": "False"
+        }
     }
 ]
