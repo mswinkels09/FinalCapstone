@@ -14,18 +14,21 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 
+
 from finalcapstoneapi.views.categories import Categories
 from django.conf.urls import include
 from django.urls import path
 from django.conf import settings
 from finalcapstoneapi.views import login_user, register_user
-from finalcapstoneapi.views import ListedItems
+from finalcapstoneapi.views import ListedItems, Supply_Types, Listing_Types
 from finalcapstoneapi.models import Item
 from rest_framework import routers
 
 router = routers.DefaultRouter(trailing_slash=False)
 router.register(r'listeditems', ListedItems, 'listeditems')
 router.register(r'categories', Categories, 'categories')
+router.register(r'supply_types', Supply_Types, 'supply_types')
+router.register(r'listing_types', Listing_Types, 'listing_types')
 
 urlpatterns = [
     path('', include(router.urls)),
