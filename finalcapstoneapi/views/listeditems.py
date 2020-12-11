@@ -9,41 +9,41 @@ from django.contrib.auth.models import User
 from rest_framework import status
 from finalcapstoneapi.models import Item, Category, Listing_Type, Weight_Type
 
-class CategorySerializer(serializers.HyperlinkedModelSerializer):
+class CategorySerializer(serializers.ModelSerializer):
     """JSON serializer for categories"""
     class Meta:
         model = Category
-        fields = ('name', 'url' )
+        fields = ('name', )
 
-# class UserSerializer(serializers.ModelSerializer):
-#     """JSON serializer for users"""
-#     class Meta:
-#         model = User
-#         fields = ('id', )
+class UserSerializer(serializers.ModelSerializer):
+    """JSON serializer for users"""
+    class Meta:
+        model = User
+        fields = ('id', )
 
-class ListingTypeSerializer(serializers.HyperlinkedModelSerializer):
+class ListingTypeSerializer(serializers.ModelSerializer):
     """JSON serializer for listing types"""
     class Meta:
         model = Listing_Type
-        fields = ('name', 'url')
+        fields = ('name', )
 
-class WeightTypeSerializer(serializers.HyperlinkedModelSerializer):
+class WeightTypeSerializer(serializers.ModelSerializer):
     """JSON serializer for listing types"""
     class Meta:
         model = Weight_Type
-        fields = ('type', 'percentage', 'url')
+        fields = ('type', 'percentage')
 
 
-class ItemSerializer(serializers.HyperlinkedModelSerializer):
+class ItemSerializer(serializers.ModelSerializer):
     """JSON serializer for items"""
-    # user = UserSerializer(many=False)
+    user = UserSerializer(many=False)
     category = CategorySerializer(many=False)
     listing_type = ListingTypeSerializer(many=False)
     weight_type = WeightTypeSerializer(many=False)
 
     class Meta:
         model = Item
-        fields = ('id', 'url', 'title', 'unique_item_id', 'category', 'listing_type',
+        fields = ('id', 'user', 'title', 'unique_item_id', 'category', 'listing_type',
                 'item_weight', 'weight_type', 'notes', 'item_cost','date_listed', 
                 'listing_fee', 'shipping_cost', 'shipping_paid', 'item_paid', 
                 'final_value_fee', 'sold_date', 'returned', )
@@ -118,16 +118,14 @@ class ListedItems(ViewSet):
                 "title": "12 inch Baby Yoda The Mandalorian Master Stuffed Doll Plush Toys Black Friday US SAL",
                 "unique_item_id": 264954766269,
                 "category_id": {
-                    "url": "http://localhost:8000/categories/1",
                     "name": "Toys"
                 },
                 "listing_type_id": {
-                    "url": "http://localhost:8000/listing_type/2",
                     "name": "Ebay: Buy It Now"
                 },
                 "item_weight": 165,
                 "weight_type_id": {
-                    "url": "http://localhost:8000/weight_type/3",
+                    "user_id": 1
                     "type": "N/A",
                     "percentage": 1
                 },

@@ -3,6 +3,7 @@
         "model": "finalcapstoneapi.Weight_Type",
         "pk": 1,
         "fields": {
+            "user_id": null,
             "type": "Books",
             "percentage": 0.59
         }
@@ -11,6 +12,7 @@
         "model": "finalcapstoneapi.Weight_Type",
         "pk": 2,
         "fields": {
+            "user_id": null,
             "type": "Misc.",
             "percentage": 1.09
         }
@@ -19,6 +21,7 @@
         "model": "finalcapstoneapi.Weight_Type",
         "pk": 3,
         "fields": {
+            "user_id": null,
             "type": "N/A",
             "percentage": 1
         }
