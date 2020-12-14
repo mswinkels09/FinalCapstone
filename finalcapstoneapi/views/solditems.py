@@ -4,7 +4,7 @@ from rest_framework.response import Response
 from rest_framework import serializers
 from django.contrib.auth.models import User
 from rest_framework import status
-from finalcapstoneapi.models import Item, Category, Listing_Type, Weight_Type
+from finalcapstoneapi.models import Item
 from finalcapstoneapi.views.listeditems import CategorySerializer, WeightTypeSerializer, ListingTypeSerializer, UserSerializer
 
 class SoldItemSerializer(serializers.ModelSerializer):
