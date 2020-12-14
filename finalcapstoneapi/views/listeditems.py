@@ -34,7 +34,7 @@ class WeightTypeSerializer(serializers.ModelSerializer):
         fields = ('type', 'percentage')
 
 
-class ItemSerializer(serializers.ModelSerializer):
+class ListedItemSerializer(serializers.ModelSerializer):
     """JSON serializer for items"""
     user = UserSerializer(many=False)
     category = CategorySerializer(many=False)
@@ -45,8 +45,7 @@ class ItemSerializer(serializers.ModelSerializer):
         model = Item
         fields = ('id', 'user', 'title', 'unique_item_id', 'category', 'listing_type',
                 'item_weight', 'weight_type', 'notes', 'item_cost','date_listed', 
-                'listing_fee', 'shipping_cost', 'shipping_paid', 'item_paid', 
-                'final_value_fee', 'sold_date', 'returned', )
+                'listing_fee', )
         depth = 1
 
 
@@ -56,7 +55,7 @@ class ListedItems(ViewSet):
 
     def create(self, request):
         """
-        @api {item} /items item new item
+        @api {item} /listeditems item new item
         @apiName CreateListedItem
         @apiGroup ListedItems
 
@@ -163,7 +162,7 @@ class ListedItems(ViewSet):
 
         new_item.save()
 
-        serializer = ItemSerializer(
+        serializer = ListedItemSerializer(
             new_item, context={"request": request})
 
         return Response(serializer.data, status=status.HTTP_201_CREATED)
@@ -214,7 +213,7 @@ class ListedItems(ViewSet):
         current_user = User.objects.get(id=request.auth.user.id)
         items = Item.objects.filter(user=current_user, sold_date=None)
 
-        json_items = ItemSerializer(
+        json_items = ListedItemSerializer(
             items, many=True, context={'request': request})
 
 
@@ -266,7 +265,7 @@ class ListedItems(ViewSet):
             # The `2` at the end of the route becomes `pk`
             user = User.objects.get(id=request.auth.user.id)
             item = Item.objects.get(pk=pk, user=user, sold_date=None)
-            serializer = ItemSerializer(item, context={'request': request})
+            serializer = ListedItemSerializer(item, context={'request': request})
             return Response(serializer.data)
         except Exception as ex:
             return HttpResponseServerError(ex)
