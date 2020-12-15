@@ -25,3 +25,23 @@ class Item(models.Model):
     final_value_fee = models.FloatField(blank=True, null=True)
     sold_date = models.DateField(auto_now=False, auto_now_add=False, blank=True, null=True)
     returned = models.BooleanField(blank=True, null=True)
+
+
+# unmapped property will only be calculated when its sold
+    @property
+    def profit_per_item(self, pk=None):
+        """Total profit of each item"""
+        total_profit = 0
+        total_cost = self.item_cost + self.shipping_cost + self.listing_fee + self.final_value_fee
+        total_paid = self.shipping_paid + self.item_paid
+        total_profit = total_paid - total_cost
+        return total_profit
+
+    @property
+    def profit_per_item_percentage(self, pk=None):
+        """Total profit of each item"""
+        total_profit_percentage = 0
+        total_cost = self.item_cost + self.shipping_cost + self.listing_fee + self.final_value_fee
+        total_paid = self.shipping_paid + self.item_paid
+        total_profit_percentage = 100*((total_paid - total_cost) / total_cost)
+        return total_profit_percentage
