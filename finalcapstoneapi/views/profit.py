@@ -1,4 +1,5 @@
 """View module for handling requests about supplies"""
+from finalcapstoneapi.models.listing_type import Listing_Type
 from django.db.models.aggregates import Sum
 from finalcapstoneapi.models.item import Item
 from django.http import HttpResponseServerError
@@ -18,16 +19,22 @@ class CategorySerializer(serializers.ModelSerializer):
         model = Category
         fields = ('name', 'profit')
 
+class ListingTypeSerializer(serializers.ModelSerializer):
+    """JSON serializer for categories"""
+    class Meta:
+        model = Category
+        fields = ('name', 'profit')
 
 
-class Profit(ViewSet):
+
+class ProfitByCategory(ViewSet):
 
     def list(self, request):
         user = User.objects.get(id=request.auth.user.id)
         categories = Category.objects.annotate(profit=Sum(
-            F('items__shipping_paid') + F('items__item_paid') - F(
-            'items__item_cost') - F('items__shipping_cost') - F('items__listing_fee') - F('items__final_value_fee'),
-            filter=Q(items__user=user)
+            F('categoryitems__shipping_paid') + F('categoryitems__item_paid') - F(
+            'categoryitems__item_cost') - F('categoryitems__shipping_cost') - F('categoryitems__listing_fee') - F('categoryitems__final_value_fee'),
+            filter=Q(categoryitems__user=user)
             ))
         print(categories.query)
 
@@ -35,4 +42,17 @@ class Profit(ViewSet):
             categories, many=True, context={'request': request})
         return Response(serializer.data)
 
+class ProfitByListingType(ViewSet):
+    def list(self, request):
+        user = User.objects.get(id=request.auth.user.id)
+        listingtypes = Listing_Type.objects.annotate(profit=Sum(
+            F('listingitems__shipping_paid') + F('listingitems__item_paid') - F(
+            'listingitems__item_cost') - F('listingitems__shipping_cost') - F('listingitems__listing_fee') - F('listingitems__final_value_fee'),
+            filter=Q(listingitems__user=user)
+            ))
+        print(listingtypes.query)
+
+        serializer = ListingTypeSerializer(
+            listingtypes, many=True, context={'request': request})
+        return Response(serializer.data)
 

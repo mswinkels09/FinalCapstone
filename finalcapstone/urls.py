@@ -15,19 +15,21 @@ Including another URLconf
 """
 
 
+from finalcapstoneapi.views.profit import ProfitByCategory, ProfitByListingType
 from finalcapstoneapi.views.categories import Categories
 from django.conf.urls import include
 from django.urls import path
 from django.conf import settings
 from finalcapstoneapi.views import login_user, register_user
-from finalcapstoneapi.views import ListedItems, Supply_Types, Listing_Types, Weight_Types, SoldItems, Expense, Profit
+from finalcapstoneapi.views import ListedItems, Supply_Types, Listing_Types, Weight_Types, SoldItems, Expense
 from rest_framework import routers
 
 router = routers.DefaultRouter(trailing_slash=False)
 router.register(r'listeditems', ListedItems, 'listeditems')
 router.register(r'solditems', SoldItems, 'solditems')
 router.register(r'expenses', Expense, 'expenses')
-router.register(r'profitbycategories', Profit, 'profitbycategories')
+router.register(r'profitbycategories', ProfitByCategory, 'profitbycategories')
+router.register(r'profitbylistingtype', ProfitByListingType, 'profitbylistingtype')
 router.register(r'categories', Categories, 'categories')
 router.register(r'supply_types', Supply_Types, 'supply_types')
 router.register(r'listing_types', Listing_Types, 'listing_types')
