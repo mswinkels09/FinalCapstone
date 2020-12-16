@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+import datetime
 
 class Item(models.Model):
     """Item database model"""
@@ -9,7 +10,7 @@ class Item(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     title = models.CharField(max_length=50)
     unique_item_id = models.IntegerField()
-    category = models.ForeignKey("Category", on_delete=models.CASCADE)
+    category = models.ForeignKey("Category", on_delete=models.CASCADE, related_name="items")
     listing_type = models.ForeignKey("Listing_Type", on_delete=models.CASCADE)
     item_weight = models.FloatField()
     weight_type = models.ForeignKey("Weight_Type", on_delete=models.CASCADE)
@@ -45,3 +46,14 @@ class Item(models.Model):
         total_paid = self.shipping_paid + self.item_paid
         total_profit_percentage = 100*((total_paid - total_cost) / total_cost)
         return total_profit_percentage
+
+    @property
+    def profit_per_month(self, pk=None):
+        """Total profit per month"""
+        date_sold = self.sold_date
+        year,month,date = date_sold.split('-')
+        for year in datetime.date[0]:
+            for month in datetime.date[1]:
+                total_profit = 0
+                self.profit_per_item += total_profit
+                return total_profit
