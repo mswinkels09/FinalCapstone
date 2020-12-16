@@ -22,7 +22,7 @@ class CategorySerializer(serializers.ModelSerializer):
 class ListingTypeSerializer(serializers.ModelSerializer):
     """JSON serializer for categories"""
     class Meta:
-        model = Category
+        model = Listing_Type
         fields = ('name', 'profit')
 
 
@@ -45,6 +45,7 @@ class ProfitByCategory(ViewSet):
 class ProfitByListingType(ViewSet):
     def list(self, request):
         user = User.objects.get(id=request.auth.user.id)
+
         listingtypes = Listing_Type.objects.annotate(profit=Sum(
             F('listingitems__shipping_paid') + F('listingitems__item_paid') - F(
             'listingitems__item_cost') - F('listingitems__shipping_cost') - F('listingitems__listing_fee') - F('listingitems__final_value_fee'),
@@ -55,4 +56,3 @@ class ProfitByListingType(ViewSet):
         serializer = ListingTypeSerializer(
             listingtypes, many=True, context={'request': request})
         return Response(serializer.data)
-

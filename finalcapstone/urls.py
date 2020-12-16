@@ -21,13 +21,14 @@ from django.conf.urls import include
 from django.urls import path
 from django.conf import settings
 from finalcapstoneapi.views import login_user, register_user
-from finalcapstoneapi.views import ListedItems, Supply_Types, Listing_Types, Weight_Types, SoldItems, Expense
+from finalcapstoneapi.views import ListedItems, Supply_Types, Listing_Types, Weight_Types, SoldItems, Expense, ExpenseBySupplyType
 from rest_framework import routers
 
 router = routers.DefaultRouter(trailing_slash=False)
 router.register(r'listeditems', ListedItems, 'listeditems')
 router.register(r'solditems', SoldItems, 'solditems')
 router.register(r'expenses', Expense, 'expenses')
+router.register(r'expensesbysupplytype', ExpenseBySupplyType, 'expensesbysupplytype')
 router.register(r'profitbycategories', ProfitByCategory, 'profitbycategories')
 router.register(r'profitbylistingtype', ProfitByListingType, 'profitbylistingtype')
 router.register(r'categories', Categories, 'categories')

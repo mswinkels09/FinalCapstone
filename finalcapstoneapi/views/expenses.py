@@ -6,6 +6,10 @@ from rest_framework import status
 from rest_framework import serializers
 from finalcapstoneapi.models import Expenses, Supply_Type
 from django.contrib.auth.models import User
+from django.db.models import F
+from django.db.models import Q
+from django.db.models.aggregates import Sum
+from datetime import datetime
 import uuid
 import base64
 from django.core.files.base import ContentFile
@@ -34,6 +38,14 @@ class ExpenseSerializer(serializers.ModelSerializer):
     class Meta:
         model = Expenses
         fields = ('id', 'user', 'cost', 'date_purchased', 'supply_type', 'image')
+
+class SupplyTypeExpensesSerializer(serializers.ModelSerializer):
+    """JSON serializer for expenses by supply_types"""
+    class Meta:
+        model = Supply_Type
+        fields = ('name', 'expense')
+
+
 
 
 class Expense(ViewSet):
@@ -155,3 +167,20 @@ class Expense(ViewSet):
         ]
 
         return [ key for key in REQUIRED_KEYS if not key in self.request.data ]
+
+
+class ExpenseBySupplyType(ViewSet):
+
+    def list(self, request):
+        user = User.objects.get(id=request.auth.user.id)
+        currentYear = datetime.now().year #want to filter by year if possible if not will filter in front end
+        supplies = Supply_Type.objects.annotate(expense=Sum(
+            F('expenses__cost')
+            )).filter(Q(expenses__user=user))
+        print(supplies.query)
+
+        serializer = SupplyTypeExpensesSerializer(
+            supplies, many=True, context={'request': request})
+        return Response(serializer.data)
+
+        # .filter(expenses__date_purchased__year= currentYear)

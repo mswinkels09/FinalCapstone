@@ -48,12 +48,20 @@ class Item(models.Model):
         return total_profit_percentage
 
     @property
-    def profit_per_month(self, pk=None):
-        """Total profit per month"""
-        date_sold = self.sold_date
-        year,month,date = date_sold.split('-')
-        for year in datetime.date[0]:
-            for month in datetime.date[1]:
-                total_profit = 0
-                self.profit_per_item += total_profit
-                return total_profit
+    def profit(self, pk=None):
+        return self.__profit
+
+    @profit.setter
+    def profit(self, value):
+        self.__profit=value
+
+    # @property
+    # def profit_per_month(self, pk=None):
+    #     """Total profit per month"""
+    #     date_sold = self.sold_date
+    #     year,month,date = date_sold.split('-')
+    #     for year in datetime.date[0]:
+    #         for month in datetime.date[1]:
+    #             total_profit = 0
+    #             self.profit_per_item += total_profit
+    #             return total_profit
