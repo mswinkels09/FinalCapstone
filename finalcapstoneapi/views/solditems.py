@@ -19,7 +19,7 @@ class SoldItemSerializer(serializers.ModelSerializer):
         fields = ('id', 'user', 'title', 'unique_item_id', 'category', 'listing_type',
                 'item_weight', 'weight_type', 'notes', 'item_cost','date_listed', 
                 'listing_fee', 'shipping_cost', 'shipping_paid', 'item_paid', 
-                'final_value_fee', 'sold_date', 'returned', 'profit_per_item', 'profit_per_item_percentage' )
+                'final_value_fee', 'sold_date', 'returned', 'profit_per_item', 'profit_per_item_percentage', )
         depth = 1
 
 
