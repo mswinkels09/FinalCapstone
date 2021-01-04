@@ -10,12 +10,11 @@ class Expenses(models.Model):
     cost = models.FloatField()
     supply_type = models.ForeignKey("Supply_Type", on_delete=models.CASCADE, related_name="expenses")
     image = models.ImageField(upload_to='receipt_image', height_field=None, width_field=None, max_length=None, null=True)
-
+    
     @property
-    def expense(self, pk=None):
+    def totalexpense(self, pk=None):
         return self.__expense
 
-    @expense.setter
-    def expense(self, value):
-        self.__expense=value
-        
+    @property
+    def expensemonth(self, pk=None):
+        return self.__expense

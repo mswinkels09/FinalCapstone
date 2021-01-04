@@ -25,6 +25,12 @@ class ListingTypeSerializer(serializers.ModelSerializer):
         model = Listing_Type
         fields = ('name', 'profit')
 
+class TotalProfitSerializer(serializers.ModelSerializer):
+    """JSON serializer for categories"""
+    class Meta:
+        model = Item
+        fields = ('profit', )
+
 
 
 class ProfitByCategory(ViewSet):
@@ -42,6 +48,20 @@ class ProfitByCategory(ViewSet):
             categories, many=True, context={'request': request})
         return Response(serializer.data)
 
+    def profit_by_category_filter_by_year(self, request):
+        filteredcategories = []
+        itemList = Item.objects.all()
+        yearslist = list(itemList.sold_date)
+        print(yearslist)
+        # user = User.objects.get(id=request.auth.user.id)
+        # categories = Category.objects.annotate(profit=Sum(
+        #     F('categoryitems__shipping_paid') + F('categoryitems__item_paid') - F(
+        #     'categoryitems__item_cost') - F('categoryitems__shipping_cost') - F('categoryitems__listing_fee') - F('categoryitems__final_value_fee'),
+        #     filter=Q(categoryitems__user=user)
+        #     ))
+        # for years in self.date_purchased('%Y'):
+        #     filteredcategories = categories.annotate(F('categoryitems__date_purchased = years'))
+
 class ProfitByListingType(ViewSet):
     def list(self, request):
         user = User.objects.get(id=request.auth.user.id)
@@ -56,3 +76,4 @@ class ProfitByListingType(ViewSet):
         serializer = ListingTypeSerializer(
             listingtypes, many=True, context={'request': request})
         return Response(serializer.data)
+

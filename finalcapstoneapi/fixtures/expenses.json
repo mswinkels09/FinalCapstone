@@ -3,7 +3,7 @@
         "model": "finalcapstoneapi.Expenses",
         "pk": 1,
         "fields": {
-            "user_id": 1,
+            "user_id": 3,
             "date_purchased": "2020-12-03",
             "cost": 12.52,
             "supply_type_id": 1

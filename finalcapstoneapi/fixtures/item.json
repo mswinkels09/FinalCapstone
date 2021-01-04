@@ -3,7 +3,7 @@
         "model": "finalcapstoneapi.Item",
         "pk": 1,
         "fields": {
-            "user_id": 1,
+            "user_id": 3,
             "title": "12 inch Baby Yoda The Mandalorian Master Stuffed Doll Plush Toys Black Friday US SAL",
             "unique_item_id": 264954766269,
             "category_id": 1,
@@ -25,7 +25,7 @@
         "model": "finalcapstoneapi.Item",
         "pk": 2,
         "fields": {
-            "user_id": 1,
+            "user_id": 3,
             "title": "SAMPLE2",
             "unique_item_id": 26,
             "category_id": 1,

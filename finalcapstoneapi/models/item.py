@@ -1,6 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
-import datetime
+from datetime import date
 
 class Item(models.Model):
     """Item database model"""
@@ -44,7 +44,7 @@ class Item(models.Model):
         total_profit_percentage = 0
         total_cost = self.item_cost + self.shipping_cost + self.listing_fee + self.final_value_fee
         total_paid = self.shipping_paid + self.item_paid
-        total_profit_percentage = 100*((total_paid - total_cost) / total_cost)
+        total_profit_percentage = round(100*((total_paid - total_cost) / total_cost), 2)
         return total_profit_percentage
 
     @property
@@ -55,13 +55,8 @@ class Item(models.Model):
     def profit(self, value):
         self.__profit=value
 
-    # @property
-    # def profit_per_month(self, pk=None):
-    #     """Total profit per month"""
-    #     date_sold = self.sold_date
-    #     year,month,date = date_sold.split('-')
-    #     for year in datetime.date[0]:
-    #         for month in datetime.date[1]:
-    #             total_profit = 0
-    #             self.profit_per_item += total_profit
-    #             return total_profit
+    @property
+    def daysListed(self, pk=None):
+        currentDate = date.today()
+        d2 = self.date_listed
+        return abs((currentDate-d2).days)

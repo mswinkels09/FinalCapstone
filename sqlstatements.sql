@@ -36,3 +36,13 @@ FROM "finalcapstoneapi_category"
     )
 GROUP BY "finalcapstoneapi_category"."id",
     "finalcapstoneapi_category"."name"
+
+
+
+-- Expenses By Month
+select strftime('%m', date_purchased) as Month, 
+sum(cost)
+from finalcapstoneapi_expenses
+where strftime('%Y', date_purchased) = strftime('%Y',date('now'))
+group by strftime('%m', date_purchased)
+order by Month;
