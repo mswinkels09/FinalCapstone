@@ -45,7 +45,7 @@ class ListedItemSerializer(serializers.ModelSerializer):
         model = Item
         fields = ('id', 'user', 'title', 'unique_item_id', 'category', 'listing_type',
                 'item_weight', 'weight_type', 'notes', 'item_cost','date_listed', 
-                'listing_fee', )
+                'listing_fee', 'daysListed')
         depth = 1
 
 
