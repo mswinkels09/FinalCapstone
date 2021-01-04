@@ -56,6 +56,22 @@ class Item(models.Model):
         self.__profit=value
 
     @property
+    def profityear(self, pk=None):
+        return self.__profityear
+
+    @profityear.setter
+    def profityear(self, value):
+        self.__profityear=value
+
+    @property
+    def profitmonth(self, pk=None):
+        return self.__profitmonth
+
+    @profitmonth.setter
+    def profitmonth(self, value):
+        self.__profitmonth=value
+
+    @property
     def daysListed(self, pk=None):
         currentDate = date.today()
         d2 = self.date_listed

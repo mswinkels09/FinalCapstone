@@ -46,3 +46,16 @@ from finalcapstoneapi_expenses
 where strftime('%Y', date_purchased) = strftime('%Y',date('now'))
 group by strftime('%m', date_purchased)
 order by Month;
+
+
+-- Profit By Year
+Select Sum(TotalPaid - TotalCost) as TotalProfit,
+    Year
+From (
+        SELECT i.item_cost + i.shipping_cost + i.listing_fee + i.final_value_fee as TotalCost,
+            i.item_paid + i.shipping_paid as TotalPaid,
+            strftime('%Y', sold_date) as Year
+        From finalcapstoneapi_item as i
+        WHERE sold_date is not NULL
+    )
+Group BY Year;

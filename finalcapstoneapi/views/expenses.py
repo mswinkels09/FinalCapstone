@@ -42,7 +42,7 @@ class ExpenseSerializer(serializers.ModelSerializer):
     class Meta:
         model = Expenses
         fields = ('id', 'user', 'cost', 'date_purchased',
-                    'supply_type', 'image')
+                  'supply_type', 'image')
 
 
 class SupplyTypeExpensesSerializer(serializers.ModelSerializer):
@@ -201,7 +201,8 @@ class ExpenseByMonth(ViewSet):
     def list(self, request):
         user = User.objects.get(id=request.auth.user.id)
         currentYear = datetime.now().year
-        monthexpenses = Expenses.objects.values('date_purchased__month').annotate(expensemonth=ExtractMonth('date_purchased__month'), totalexpense=Sum(F('cost'))).filter(Q(user=user) & (Q(date_purchased__contains=currentYear)))
+        monthexpenses = Expenses.objects.values('date_purchased__month').annotate(expensemonth=ExtractMonth(
+            'date_purchased__month'), totalexpense=Sum(F('cost'))).filter(Q(user=user) & (Q(date_purchased__contains=currentYear)))
         serializer = MonthExpensesSerializer(
             monthexpenses, many=True, context={'request': request})
         return Response(serializer.data)
