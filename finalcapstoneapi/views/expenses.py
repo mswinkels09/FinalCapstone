@@ -27,7 +27,7 @@ class SupplyTypeSerializer(serializers.ModelSerializer):
     """JSON serializer for users"""
     class Meta:
         model = Supply_Type
-        fields = ('name', )
+        fields = ('name', 'id')
 
 
 class ExpenseSerializer(serializers.ModelSerializer):
@@ -66,8 +66,6 @@ class Expense(ViewSet):
         currentYear = datetime.now().year
         expenses = Expenses.objects.filter(
             date_purchased__contains=currentYear)
-        # expenses.date_purchased = datetime.datetime.strptime(date_purchased, '%Y-%m-%d').strftime('%m/%d/%y')
-
         serializer = ExpenseSerializer(
             expenses, many=True, context={'request': request})
         return Response(serializer.data)
