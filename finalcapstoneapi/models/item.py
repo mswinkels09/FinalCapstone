@@ -2,6 +2,8 @@ from django.db import models
 from django.contrib.auth.models import User
 from datetime import date
 
+from django.db.models.aggregates import Count
+
 class Item(models.Model):
     """Item database model"""
 
@@ -70,9 +72,29 @@ class Item(models.Model):
     @profitmonth.setter
     def profitmonth(self, value):
         self.__profitmonth=value
+    
+    @property
+    def soldItemMonth(self, pk=None):
+        return self.__soldItemMonth
+
+    @soldItemMonth.setter
+    def soldItemMonth(self, value):
+        self.__soldItemMonth=value
+    
+    @property
+    def totalitems(self, pk=None):
+        return self.__totalitems
+
+    @totalitems.setter
+    def totalitems(self, value):
+        self.__totalitems=value
 
     @property
     def daysListed(self, pk=None):
         currentDate = date.today()
         d2 = self.date_listed
         return abs((currentDate-d2).days)
+
+    @property
+    def dateSoldConverted(self, pk=None):
+        return self.sold_date.strftime('%m/%d/%Y')

@@ -6,6 +6,11 @@ from django.contrib.auth.models import User
 from rest_framework import status
 from finalcapstoneapi.models import Item
 from finalcapstoneapi.views.listeditems import CategorySerializer, WeightTypeSerializer, ListingTypeSerializer, UserSerializer
+from django.db.models import F
+from django.db.models import Q
+from django.db.models.aggregates import Count
+from datetime import datetime
+from django.db.models.functions import ExtractMonth
 
 class SoldItemSerializer(serializers.ModelSerializer):
     """JSON serializer for items"""
@@ -19,8 +24,14 @@ class SoldItemSerializer(serializers.ModelSerializer):
         fields = ('id', 'user', 'title', 'unique_item_id', 'category', 'listing_type',
                 'item_weight', 'weight_type', 'notes', 'item_cost','date_listed', 
                 'listing_fee', 'shipping_cost', 'shipping_paid', 'item_paid', 
-                'final_value_fee', 'sold_date', 'returned', 'profit_per_item', 'profit_per_item_percentage', )
+                'final_value_fee', 'sold_date', 'returned', 'profit_per_item', 'profit_per_item_percentage', 'dateSoldConverted')
         depth = 1
+
+class SoldItemsPerMonthSerializer(serializers.ModelSerializer):
+    """JSON serializer for expenses by month"""
+    class Meta:
+        model = Item
+        fields = ('totalitems', 'soldItemMonth')
 
 
 class SoldItems(ViewSet):
@@ -206,3 +217,39 @@ class SoldItems(ViewSet):
             return Response({}, status=status.HTTP_204_NO_CONTENT)
         except Exception as ex:
             return Response({'Cannot edit those areas'}) #not doing what I wish it would do
+
+    def destroy(self, request, pk=None):
+        """
+        @api {DELETE} /solditems/:id DELETE line item from cart
+        @apiName DeleteSoldItem
+        @apiGroup SoldItems
+
+        @apiParam {id} id Item Id to remove from cart
+        @apiSuccessExample {json} Success
+            HTTP/1.1 204 No Content
+        """
+        try:
+            sold_item = Item.objects.get(pk=pk, sold_date__isnull=False)
+            sold_item.delete()
+            #if succesful it will return a status code of 204
+            return Response({}, status=status.HTTP_204_NO_CONTENT)
+        #if the object to be deleted doesn't exist status code will be 404
+        except Item.DoesNotExist as ex:
+            return Response({'message': ex.args[0]}, status=status.HTTP_404_NOT_FOUND)
+
+        except Exception as ex:
+            return Response({'message': ex.args[0]}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+class SoldItemsByMonth(ViewSet):
+
+    def list(self, request):
+        user = User.objects.get(id=request.auth.user.id)
+        currentYear = datetime.now().year
+        SoldItemsPerMonth = Item.objects.values('sold_date__month').annotate(soldItemMonth=ExtractMonth(
+            'sold_date__month'), totalitems=Count(F('id'))).filter(Q(user=user) & (Q(sold_date__contains=currentYear)))
+        serializer = SoldItemsPerMonthSerializer(
+            SoldItemsPerMonth, many=True, context={'request': request})
+        return Response(serializer.data)
+
+
+

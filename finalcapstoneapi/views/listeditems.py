@@ -13,7 +13,7 @@ class CategorySerializer(serializers.ModelSerializer):
     """JSON serializer for categories"""
     class Meta:
         model = Category
-        fields = ('name', )
+        fields = ('name', 'id')
 
 class UserSerializer(serializers.ModelSerializer):
     """JSON serializer for users"""
@@ -25,13 +25,13 @@ class ListingTypeSerializer(serializers.ModelSerializer):
     """JSON serializer for listing types"""
     class Meta:
         model = Listing_Type
-        fields = ('name', )
+        fields = ('name', 'id')
 
 class WeightTypeSerializer(serializers.ModelSerializer):
     """JSON serializer for listing types"""
     class Meta:
         model = Weight_Type
-        fields = ('type', 'percentage')
+        fields = ('type', 'percentage', 'id')
 
 
 class ListedItemSerializer(serializers.ModelSerializer):
@@ -318,7 +318,8 @@ class ListedItems(ViewSet):
         listed_item.unique_item_id = request.data['unique_item_id']
         listed_item.item_weight = request.data['item_weight']
         listed_item.notes = request.data['notes']
-        listed_item.item_cost = request.data['item_cost'] # will need help getting this right
+        listed_item.item_cost = request.data['item_cost']
+        listed_item.date_listed = request.data['date_listed']
         listed_item.user = user
 
         category = Category.objects.get(pk=request.data["category_id"])
