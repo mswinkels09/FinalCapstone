@@ -319,6 +319,7 @@ class ListedItems(ViewSet):
         listed_item.item_weight = request.data['item_weight']
         listed_item.notes = request.data['notes']
         listed_item.item_cost = request.data['item_cost']
+        listed_item.date_listed = request.data['date_listed']
         listed_item.user = user
 
         category = Category.objects.get(pk=request.data["category_id"])

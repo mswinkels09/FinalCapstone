@@ -42,7 +42,7 @@ class ExpenseSerializer(serializers.ModelSerializer):
     class Meta:
         model = Expenses
         fields = ('id', 'user', 'cost', 'date_purchased',
-                  'supply_type', 'image')
+                  'supply_type', 'image', 'dateExpenseConverted')
 
 
 class SupplyTypeExpensesSerializer(serializers.ModelSerializer):

@@ -18,3 +18,7 @@ class Expenses(models.Model):
     @property
     def expensemonth(self, pk=None):
         return self.__expense
+    
+    @property
+    def dateExpenseConverted(self, pk=None):
+        return self.date_purchased.strftime('%m/%d/%Y')

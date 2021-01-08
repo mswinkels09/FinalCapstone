@@ -94,3 +94,7 @@ class Item(models.Model):
         currentDate = date.today()
         d2 = self.date_listed
         return abs((currentDate-d2).days)
+
+    @property
+    def dateSoldConverted(self, pk=None):
+        return self.sold_date.strftime('%m/%d/%Y')
