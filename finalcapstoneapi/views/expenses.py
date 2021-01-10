@@ -42,14 +42,14 @@ class ExpenseSerializer(serializers.ModelSerializer):
     class Meta:
         model = Expenses
         fields = ('id', 'user', 'cost', 'date_purchased',
-                  'supply_type', 'image', 'dateExpenseConverted')
+                    'supply_type', 'image', 'dateExpenseConverted')
 
 
 class SupplyTypeExpensesSerializer(serializers.ModelSerializer):
     """JSON serializer for expenses by supply_types"""
     class Meta:
-        model = Supply_Type
-        fields = ('name', 'expense')
+        model = Expenses
+        fields = ('supply_type_id', 'totalexpense')
 
 
 class MonthExpensesSerializer(serializers.ModelSerializer):
@@ -93,7 +93,7 @@ class Expense(ViewSet):
             return Response(
                 {'message':
                     f'Request body is missing the following required properties: {", ".join(missing_keys)}'
-                 },
+                },
                 status=status.HTTP_400_BAD_REQUEST
             )
 
@@ -151,7 +151,7 @@ class Expense(ViewSet):
             return Response(
                 {'message':
                     f'Request body is missing the following required properties: {", ".join(missing_keys)}'
-                 },
+                },
                 status=status.HTTP_400_BAD_REQUEST
             )
 
@@ -186,9 +186,9 @@ class ExpenseBySupplyType(ViewSet):
     def list(self, request):
         user = User.objects.get(id=request.auth.user.id)
         currentYear = datetime.now().year
-        supplies = Supply_Type.objects.annotate(expense=Sum(
-            F('expenses__cost')
-        )).filter(Q(expenses__user=user) & Q(expenses__date_purchased__contains=currentYear))
+        supplies = Expenses.objects.values('supply_type_id').annotate(totalexpense=Sum(
+            F('cost')
+        )).filter(Q(user=user) & Q(date_purchased__contains=currentYear))
         serializer = SupplyTypeExpensesSerializer(
             supplies, many=True, context={'request': request})
         return Response(serializer.data)

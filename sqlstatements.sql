@@ -59,3 +59,9 @@ From (
         WHERE sold_date is not NULL
     )
 Group BY Year;
+
+-- Expenses by supply type
+Select Sum(cost), s.name as SupplyType
+From finalcapstoneapi_expenses as e
+JOIN finalcapstoneapi_supply_type as s on e.supply_type_id = s.id
+Group By supply_type_id

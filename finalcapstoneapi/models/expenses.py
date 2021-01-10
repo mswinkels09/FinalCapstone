@@ -22,3 +22,11 @@ class Expenses(models.Model):
     @property
     def dateExpenseConverted(self, pk=None):
         return self.date_purchased.strftime('%m/%d/%Y')
+
+    @property
+    def supplyType(self, pk=None):
+        return self.__supplyType
+
+    @supplyType.setter
+    def supplyType(self, value):
+        self.__supplyType=value
