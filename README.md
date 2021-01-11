@@ -1,7 +1,7 @@
 # PROFIT TRACKER API
 The goal of this project was to learn more about data manipulation and how it connects to a client-side(REACT) application.<br>
 <br>
-The client-side repo can be found at https://github.com/mswinkels09/finalcapstoneclient
+To view the client-side code and learn more about Profit Tracker go to: https://github.com/mswinkels09/finalcapstoneclient
 
 ## Running the server locally
 Dependencies:
