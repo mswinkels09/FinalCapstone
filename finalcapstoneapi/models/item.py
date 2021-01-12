@@ -30,7 +30,7 @@ class Item(models.Model):
     returned = models.BooleanField(blank=True, null=True)
 
 
-# unmapped property will only be calculated when its sold
+# unmapped property will only be calculated when its sold - calulates the profit after item is sold
     @property
     def profit_per_item(self, pk=None):
         """Total profit of each item"""
@@ -39,7 +39,7 @@ class Item(models.Model):
         total_paid = self.shipping_paid + self.item_paid
         total_profit = total_paid - total_cost
         return total_profit
-
+# unmapped property will only be calculated when its sold - calculated the percentage of profit after item is sold
     @property
     def profit_per_item_percentage(self, pk=None):
         """Total profit of each item"""
@@ -49,6 +49,7 @@ class Item(models.Model):
         total_profit_percentage = round(100*((total_paid - total_cost) / total_cost), 2)
         return total_profit_percentage
 
+# unmapped property to use as a reference to calculate the total profit
     @property
     def profit(self, pk=None):
         return self.__profit
@@ -57,6 +58,7 @@ class Item(models.Model):
     def profit(self, value):
         self.__profit=value
 
+# unmapped property to use as a reference for the years in "sold_date" - to categorize the total profit by year
     @property
     def profityear(self, pk=None):
         return self.__profityear
@@ -65,6 +67,7 @@ class Item(models.Model):
     def profityear(self, value):
         self.__profityear=value
 
+# unmapped property to use as a reference for the months in "sold_date" - to categorize the total profit by month in the current year
     @property
     def profitmonth(self, pk=None):
         return self.__profitmonth
@@ -73,6 +76,7 @@ class Item(models.Model):
     def profitmonth(self, value):
         self.__profitmonth=value
     
+    # unmapped property to use as a reference for the months in "sold_date" - to categorize the total number of items sold per month of current year
     @property
     def soldItemMonth(self, pk=None):
         return self.__soldItemMonth
@@ -81,6 +85,7 @@ class Item(models.Model):
     def soldItemMonth(self, value):
         self.__soldItemMonth=value
     
+    # unmapped property to use as a reference to the number of items total -right now only categorizing them per month of current year
     @property
     def totalitems(self, pk=None):
         return self.__totalitems
@@ -89,12 +94,14 @@ class Item(models.Model):
     def totalitems(self, value):
         self.__totalitems=value
 
+# unmapped property to use as a reference to the number of days a specific item has been listed on a platform since the current date
     @property
     def daysListed(self, pk=None):
         currentDate = date.today()
         d2 = self.date_listed
         return abs((currentDate-d2).days)
 
+# unmapped property to use as a reference to the conversion of the sold_date property to %m/%d/%Y from yyyy-mm-dd
     @property
     def dateSoldConverted(self, pk=None):
         return self.sold_date.strftime('%m/%d/%Y')

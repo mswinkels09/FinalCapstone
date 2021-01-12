@@ -8,7 +8,7 @@ from django.views.decorators.csrf import csrf_exempt
 
 @csrf_exempt
 def login_user(request):
-    '''Handles the authentication of a gamer
+    '''Handles the authentication of a user
 
     Method arguments:
         request -- The full HTTP request object
@@ -38,7 +38,7 @@ def login_user(request):
 
 @csrf_exempt
 def register_user(request):
-    '''Handles the creation of a new gamer for authentication
+    '''Handles the creation of a new user for authentication
 
     Method arguments:
         request -- The full HTTP request object

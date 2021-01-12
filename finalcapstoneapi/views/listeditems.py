@@ -56,8 +56,6 @@ class ListedItems(ViewSet):
     def create(self, request):
         """
         @api {item} /listeditems item new item
-        @apiName CreateListedItem
-        @apiGroup ListedItems
 
         @apiHeader {String} Authorization Auth token
         @apiHeaderExample {String} Authorization
@@ -84,7 +82,7 @@ class ListedItems(ViewSet):
                 "listing_type_id": 2,
                 "item_weight": 165,
                 "weight_type_id": 3,
-                "notes": null,
+                "notes": "Great Find",
                 "item_cost": 2,
                 "date_listed": "2020-12-09",
                 "listing_fee": 0.30
@@ -121,13 +119,13 @@ class ListedItems(ViewSet):
                 "listing_type_id": {
                     "name": "Ebay: Buy It Now"
                 },
-                "item_weight": 165,
+                "item_weight": 16,
                 "weight_type_id": {
                     "user_id": 1
                     "type": "N/A",
                     "percentage": 1
                 },
-                "notes": null,
+                "notes": "Great Find",
                 "item_cost": 2,
                 "date_listed": "2020-12-09",
                 "listing_fee": 0.30,
@@ -171,29 +169,23 @@ class ListedItems(ViewSet):
     def list(self, request):
         """
         @api {GET} /items GET all items
-        @apiName ListListedItems
-        @apiGroup ListedItems
 
         @apiSuccess (200) {Object[]} items Array of items
         @apiSuccessExample {json} Success
             [
                 {
                     "id": 101,
-                    "url": "http://localhost:8000/items/101",
                     "user_id": 1,
                     "title": "12 inch Baby Yoda The Mandalorian Master Stuffed Doll Plush Toys Black Friday US SAL",
                     "unique_item_id": 264954766269,
                     "category_id": {
-                        "url": "http://localhost:8000/categories/1",
                         "name": "Toys"
                     },
                     "listing_type_id": {
-                        "url": "http://localhost:8000/listing_type/2",
                         "name": "Ebay: Buy It Now"
                     },
                     "item_weight": 165,
                     "weight_type_id": {
-                        "url": "http://localhost:8000/weight_type/3",
                         "type": "N/A",
                         "percentage": 1
                     },
@@ -273,8 +265,6 @@ class ListedItems(ViewSet):
     def update(self, request, pk=None):
         """
         @api {PUT} /listeditems/:id PUT update listed item
-        @apiName UpdateListedItem
-        @apiGroup ListedItems
 
         @apiHeader {String} Authorization Auth token
         @apiHeaderExample {String} Authorization
@@ -338,8 +328,6 @@ class ListedItems(ViewSet):
     def destroy(self, request, pk=None):
         """
         @api {DELETE} /listeditems/:id DELETE line item from cart
-        @apiName DeleteListedItem
-        @apiGroup ListedItems
 
         @apiParam {id} id Item Id to remove from cart
         @apiSuccessExample {json} Success

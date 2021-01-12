@@ -24,7 +24,7 @@ class CurrentUserSerializer(serializers.ModelSerializer):
 
 
 class SupplyTypeSerializer(serializers.ModelSerializer):
-    """JSON serializer for users"""
+    """JSON serializer for Supply Types"""
     class Meta:
         model = Supply_Type
         fields = ('name', 'id')
@@ -182,10 +182,21 @@ class Expense(ViewSet):
 
 
 class ExpenseBySupplyType(ViewSet):
-
+    """Handle GET requests to Expense resource - groups Expense resource by supply types and total expense
+        SQL Statement: "
+        Select Sum(cost), s.name as SupplyType
+        From finalcapstoneapi_expenses as e
+        JOIN finalcapstoneapi_supply_type as s on e.supply_type_id = s.id
+        Group By supply_type_id
+        "
+    """
     def list(self, request):
         user = User.objects.get(id=request.auth.user.id)
         currentYear = datetime.now().year
+        #Select Sum(cost), s.name as SupplyType
+        # From finalcapstoneapi_expenses as e
+        # JOIN finalcapstoneapi_supply_type as s on e.supply_type_id = s.id
+        # Group By supply_type_id
         supplies = Expenses.objects.values('supply_type_id').annotate(totalexpense=Sum(
             F('cost')
         )).filter(Q(user=user) & Q(date_purchased__contains=currentYear))
@@ -195,6 +206,16 @@ class ExpenseBySupplyType(ViewSet):
 
 
 class ExpenseByMonth(ViewSet):
+    """Handle GET requests to Expense resource - groups Expense resource by supply types and total expense
+        SQL Statement: "
+        select strftime('%m', date_purchased) as Month, 
+        sum(cost)
+        from finalcapstoneapi_expenses
+        where strftime('%Y', date_purchased) = strftime('%Y',date('now'))
+        group by strftime('%m', date_purchased)
+        order by Month;
+        "
+    """
 
     def list(self, request):
         user = User.objects.get(id=request.auth.user.id)
