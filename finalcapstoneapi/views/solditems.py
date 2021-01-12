@@ -13,7 +13,7 @@ from datetime import datetime
 from django.db.models.functions import ExtractMonth
 
 class SoldItemSerializer(serializers.ModelSerializer):
-    """JSON serializer for items"""
+    """JSON serializer for sold items"""
     user = UserSerializer(many=False)
     category = CategorySerializer(many=False)
     listing_type = ListingTypeSerializer(many=False)
@@ -28,7 +28,7 @@ class SoldItemSerializer(serializers.ModelSerializer):
         depth = 1
 
 class SoldItemsPerMonthSerializer(serializers.ModelSerializer):
-    """JSON serializer for expenses by month"""
+    """JSON serializer for number of sold items by month"""
     class Meta:
         model = Item
         fields = ('totalitems', 'soldItemMonth')
@@ -39,8 +39,6 @@ class SoldItems(ViewSet):
     def list(self, request):
         """
         @api {GET} /solditems GET all sold items
-        @apiName ListSoldItems
-        @apiGroup SoldItems
 
         @apiSuccess (200) {Object[]} items Array of items
         @apiSuccessExample {json} Success
@@ -61,7 +59,7 @@ class SoldItems(ViewSet):
                         "type": "N/A",
                         "percentage": 1
                     },
-                    "notes": null,
+                    "notes": "great sell",
                     "item_cost": 2,
                     "date_listed": "2020-12-09",
                     "listing_fee": 0.30,
@@ -89,8 +87,6 @@ class SoldItems(ViewSet):
     def retrieve(self, request, pk=None):
         """
         @api {GET} /solditems/:id GET sold_item
-        @apiName GetSoldItem
-        @apiGroup SoldItems
 
         @apiParam {id} id Item Id
 
@@ -112,7 +108,7 @@ class SoldItems(ViewSet):
                     "type": "N/A",
                     "percentage": 1
                 },
-                "notes": null,
+                "notes": "great sell",
                 "item_cost": 2,
                 "date_listed": "2020-12-09",
                 "listing_fee": 0.30,
@@ -140,8 +136,6 @@ class SoldItems(ViewSet):
     def update(self, request, pk=None):
         """
         @api {PUT} /solditems/:id PUT update listed item
-        @apiName UpdateSoldItem
-        @apiGroup SoldItems
 
         @apiHeader {String} Authorization Auth token
         @apiHeaderExample {String} Authorization
@@ -183,7 +177,7 @@ class SoldItems(ViewSet):
                     "type": "N/A",
                     "percentage": 1
                 },
-                "notes": null,
+                "notes": "great sell",
                 "item_cost": 2,
                 "date_listed": "2020-12-09",
                 "listing_fee": 0.30,
@@ -221,8 +215,6 @@ class SoldItems(ViewSet):
     def destroy(self, request, pk=None):
         """
         @api {DELETE} /solditems/:id DELETE line item from cart
-        @apiName DeleteSoldItem
-        @apiGroup SoldItems
 
         @apiParam {id} id Item Id to remove from cart
         @apiSuccessExample {json} Success
@@ -241,7 +233,16 @@ class SoldItems(ViewSet):
             return Response({'message': ex.args[0]}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 class SoldItemsByMonth(ViewSet):
-
+    """Handle GET requests to Item resource - groups Item resource by month and total number of sold items
+        SQL Statement: "
+            select strftime('%m', sold_date) as Month, 
+            Count(id)
+            from finalcapstoneapi_item
+            where strftime('%Y', sold_date) = strftime('%Y',date('now'))
+            group by strftime('%m', sold_date)
+            order by Month;
+        "
+    """
     def list(self, request):
         user = User.objects.get(id=request.auth.user.id)
         currentYear = datetime.now().year

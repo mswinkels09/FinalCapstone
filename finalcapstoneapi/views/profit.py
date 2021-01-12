@@ -16,42 +16,58 @@ from datetime import datetime
 
 
 class CategorySerializer(serializers.ModelSerializer):
-    """JSON serializer for categories"""
+    """JSON serializer for categories and total profit"""
     class Meta:
         model = Category
         fields = ('name', 'profit')
 
 
 class ListingTypeSerializer(serializers.ModelSerializer):
-    """JSON serializer for categories"""
+    """JSON serializer for listing types and total profit"""
     class Meta:
         model = Listing_Type
         fields = ('name', 'profit')
 
 
 class TotalProfitSerializer(serializers.ModelSerializer):
-    """JSON serializer for categories"""
+    """JSON serializer for total profit off of Item Model"""
     class Meta:
         model = Item
         fields = ('profit', )
 
 
 class ProfitByYearSerializer(serializers.ModelSerializer):
-    """JSON serializer for categories"""
+    """JSON serializer for total profit and profit year off the Item Model"""
     class Meta:
         model = Item
         fields = ('profit', 'profityear')
 
 
 class ProfitByMonthSerializer(serializers.ModelSerializer):
-    """JSON serializer for categories"""
+    """JSON serializer for total profit and profit month off the Item Model"""
     class Meta:
         model = Item
         fields = ('profit', 'profitmonth')
 
 
 class ProfitByCategory(ViewSet):
-
+    """Handle GET requests to Category resource - groups Category resource by categories and total profit
+        SQL Statement: "
+        Select Sum(TotalPaid - TotalCost) as TotalProfit,
+        ItemTitle,
+        CategoryName
+        From (
+            SELECT i.item_cost + i.shipping_cost + i.listing_fee + i.final_value_fee as TotalCost,
+                i.item_paid + i.shipping_paid as TotalPaid,
+                i.title as ItemTitle,
+                c.name as CategoryName
+            From finalcapstoneapi_item as i
+                Join finalcapstoneapi_category c on c.id = i.category_id
+            WHERE sold_date is not NULL
+            )
+        Group BY CategoryName;
+        "
+    """
     def list(self, request):
         user = User.objects.get(id=request.auth.user.id)
         categories = Category.objects.annotate(profit=Sum(
@@ -65,22 +81,24 @@ class ProfitByCategory(ViewSet):
             categories, many=True, context={'request': request})
         return Response(serializer.data)
 
-    def profit_by_category_filter_by_year(self, request):
-        filteredcategories = []
-        itemList = Item.objects.all()
-        yearslist = list(itemList.sold_date)
-        print(yearslist)
-        # user = User.objects.get(id=request.auth.user.id)
-        # categories = Category.objects.annotate(profit=Sum(
-        #     F('categoryitems__shipping_paid') + F('categoryitems__item_paid') - F(
-        #     'categoryitems__item_cost') - F('categoryitems__shipping_cost') - F('categoryitems__listing_fee') - F('categoryitems__final_value_fee'),
-        #     filter=Q(categoryitems__user=user)
-        #     ))
-        # for years in self.date_purchased('%Y'):
-        #     filteredcategories = categories.annotate(F('categoryitems__date_purchased = years'))
-
-
 class ProfitByListingType(ViewSet):
+    """Handle GET requests to Listing Type resource - groups Listing Type resource by listing types and total profit
+        SQL Statement: "
+        Select Sum(TotalPaid - TotalCost) as TotalProfit,
+        ItemTitle,
+        ListingTypeName
+        From (
+            SELECT i.item_cost + i.shipping_cost + i.listing_fee + i.final_value_fee as TotalCost,
+                i.item_paid + i.shipping_paid as TotalPaid,
+                i.title as ItemTitle,
+                l.name as ListingTypeName
+            From finalcapstoneapi_item as i
+                Join finalcapstoneapi_listing_type l on l.id = i.listing_type_id
+            WHERE sold_date is not NULL
+            )
+        Group BY ListingTypeName;
+        "
+    """
     def list(self, request):
         user = User.objects.get(id=request.auth.user.id)
 
@@ -97,6 +115,20 @@ class ProfitByListingType(ViewSet):
 
 
 class ProfitByYear(ViewSet):
+    """Handle GET requests to Item resource - groups Item resource by year and total profit
+        SQL Statement: "
+        Select Sum(TotalPaid - TotalCost) as TotalProfit,
+        Year
+        From (
+            SELECT i.item_cost + i.shipping_cost + i.listing_fee + i.final_value_fee as TotalCost,
+                i.item_paid + i.shipping_paid as TotalPaid,
+                strftime('%Y', sold_date) as Year
+            From finalcapstoneapi_item as i
+            WHERE sold_date is not NULL
+            )
+        Group BY Year;
+        "
+    """
     def list(self, request):
         user = User.objects.get(id=request.auth.user.id)
         profityears = Item.objects.values('sold_date__year').annotate(profit=Sum(
@@ -109,6 +141,16 @@ class ProfitByYear(ViewSet):
 
 
 class ProfitByMonth(ViewSet):
+    """Handle GET requests to Item resource - groups Item resource by month and total profit
+        SQL Statement: "
+            select strftime('%m', sold_date) as Month, 
+            sum(cost)
+            from finalcapstoneapi_item
+            where strftime('%Y', sold_date) = strftime('%Y',date('now'))
+            group by strftime('%m', sold_date)
+            order by Month;
+        "
+    """
     def list(self, request):
         user = User.objects.get(id=request.auth.user.id)
         currentYear = datetime.now().year

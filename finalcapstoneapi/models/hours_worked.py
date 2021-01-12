@@ -2,7 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 
 class Hours_Worked(models.Model):
-    """Item database model"""
+    """Hours Worked database model"""
 
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     date = models.DateField(auto_now=False, auto_now_add=False)
