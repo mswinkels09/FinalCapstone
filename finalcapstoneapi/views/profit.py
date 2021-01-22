@@ -68,6 +68,7 @@ class ProfitByCategory(ViewSet):
         Group BY CategoryName;
         "
     """
+
     def list(self, request):
         user = User.objects.get(id=request.auth.user.id)
         categories = Category.objects.annotate(profit=Sum(
@@ -80,6 +81,7 @@ class ProfitByCategory(ViewSet):
         serializer = CategorySerializer(
             categories, many=True, context={'request': request})
         return Response(serializer.data)
+
 
 class ProfitByListingType(ViewSet):
     """Handle GET requests to Listing Type resource - groups Listing Type resource by listing types and total profit
@@ -99,6 +101,7 @@ class ProfitByListingType(ViewSet):
         Group BY ListingTypeName;
         "
     """
+
     def list(self, request):
         user = User.objects.get(id=request.auth.user.id)
 
@@ -129,6 +132,7 @@ class ProfitByYear(ViewSet):
         Group BY Year;
         "
     """
+
     def list(self, request):
         user = User.objects.get(id=request.auth.user.id)
         profityears = Item.objects.values('sold_date__year').annotate(profit=Sum(
@@ -151,6 +155,7 @@ class ProfitByMonth(ViewSet):
             order by Month;
         "
     """
+
     def list(self, request):
         user = User.objects.get(id=request.auth.user.id)
         currentYear = datetime.now().year
