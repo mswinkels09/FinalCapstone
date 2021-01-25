@@ -192,6 +192,14 @@ class SoldItems(ViewSet):
         @apiSuccessExample {json} Success
             HTTP/1.1 204 No Content
         """
+        missing_keys = self._get_missing_keys()
+        if len(missing_keys) > 0:
+            return Response(
+                {'message':
+                    f'Request body is missing the following required properties: {", ".join(missing_keys)}'
+                },
+                status=status.HTTP_400_BAD_REQUEST
+            )
 
         user = User.objects.get(id=request.auth.user.id)
 
@@ -231,6 +239,13 @@ class SoldItems(ViewSet):
 
         except Exception as ex:
             return Response({'message': ex.args[0]}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+    def _get_missing_keys(self):
+        """Given the request.data for a POST/PUT request, return a list containing the
+        string values of all required keys that were not found in the request body"""
+        REQUIRED_KEYS = [
+            'shipping_cost', 'shipping_paid', 'item_paid', 'final_value_fee', 'sold_date'
+        ]
 
 class SoldItemsByMonth(ViewSet):
     """Handle GET requests to Item resource - groups Item resource by month and total number of sold items

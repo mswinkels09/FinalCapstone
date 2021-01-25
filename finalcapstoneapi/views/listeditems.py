@@ -136,6 +136,15 @@ class ListedItems(ViewSet):
                 "returned": "False"
             }
         """
+        missing_keys = self._get_missing_keys()
+        if len(missing_keys) > 0:
+            return Response(
+                {'message':
+                    f'Request body is missing the following required properties: {", ".join(missing_keys)}'
+                },
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
         new_item = Item()
         new_item.title = request.data["title"]
         new_item.unique_item_id = request.data["unique_item_id"]
@@ -301,6 +310,15 @@ class ListedItems(ViewSet):
             HTTP/1.1 204 No Content
         """
 
+        missing_keys = self._get_missing_keys()
+        if len(missing_keys) > 0:
+            return Response(
+                {'message':
+                    f'Request body is missing the following required properties: {", ".join(missing_keys)}'
+                },
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
         user = User.objects.get(id=request.auth.user.id)
 
         listed_item = Item.objects.get(pk=pk)
@@ -344,3 +362,12 @@ class ListedItems(ViewSet):
 
         except Exception as ex:
             return Response({'message': ex.args[0]}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+    def _get_missing_keys(self):
+        """Given the request.data for a POST/PUT request, return a list containing the
+        string values of all required keys that were not found in the request body"""
+        REQUIRED_KEYS = [
+            'title', 'item_weight', 'item_cost', 'date_listed', 'category_id', 'listing_type_id', 'weight_type_id'
+        ]
+
+        return [key for key in REQUIRED_KEYS if not key in self.request.data]
