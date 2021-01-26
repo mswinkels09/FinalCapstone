@@ -192,20 +192,15 @@ class SoldItems(ViewSet):
         @apiSuccessExample {json} Success
             HTTP/1.1 204 No Content
         """
-        missing_keys = self._get_missing_keys()
-        if len(missing_keys) > 0:
-            return Response(
-                {'message':
-                    f'Request body is missing the following required properties: {", ".join(missing_keys)}'
-                },
-                status=status.HTTP_400_BAD_REQUEST
-            )
 
         user = User.objects.get(id=request.auth.user.id)
 
         sold_item = Item.objects.get(pk=pk)
         try:
-            sold_item.notes = request.data['notes']
+            if len(request.data) == 7:
+                sold_item.notes = None
+            else:
+                sold_item.notes = request.data["notes"]
             sold_item.shipping_cost = request.data['shipping_cost']
             sold_item.shipping_paid = request.data['shipping_paid']
             sold_item.item_paid = request.data['item_paid']

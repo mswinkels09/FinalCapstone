@@ -146,10 +146,14 @@ class ListedItems(ViewSet):
             )
 
         new_item = Item()
+        if len(request.data) == 9:
+            new_item.notes = None
+        else:
+            new_item.notes = request.data["notes"]
         new_item.title = request.data["title"]
         new_item.unique_item_id = request.data["unique_item_id"]
         new_item.item_weight = request.data["item_weight"]
-        new_item.notes = request.data["notes"]
+        # new_item.notes = request.data["notes"]
         new_item.item_cost = request.data["item_cost"]
         new_item.date_listed = request.data["date_listed"]
         new_item.listing_fee = request.data["listing_fee"]
@@ -322,6 +326,10 @@ class ListedItems(ViewSet):
         user = User.objects.get(id=request.auth.user.id)
 
         listed_item = Item.objects.get(pk=pk)
+        if len(request.data) == 9:
+            listed_item.notes = None
+        else:
+            listed_item.notes = request.data['notes']
         listed_item.title = request.data['title']
         listed_item.unique_item_id = request.data['unique_item_id']
         listed_item.item_weight = request.data['item_weight']
