@@ -1,12 +1,17 @@
 from django.db import models
 from django.contrib.auth.models import User
-from datetime import date
+from datetime import date, datetime
+from django.core.validators import MinValueValidator
+from django.core.exceptions import ValidationError
 
 from django.db.models.aggregates import Count
 
 class Item(models.Model):
     """Item database model"""
 
+    def validate_value(value):
+        if value < 0:
+            raise ValidationError("Please enter a number greater than 0")
 
     """User will need the following when first creating a new item"""
     user = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -14,18 +19,18 @@ class Item(models.Model):
     unique_item_id = models.IntegerField(null=True, blank=True)
     category = models.ForeignKey("Category", on_delete=models.CASCADE, related_name="categoryitems")
     listing_type = models.ForeignKey("Listing_Type", on_delete=models.CASCADE,  related_name="listingitems")
-    item_weight = models.FloatField()
+    item_weight = models.FloatField(validators=[validate_value])
     weight_type = models.ForeignKey("Weight_Type", on_delete=models.CASCADE)
     notes = models.CharField(max_length=255, null=True, blank=True, default=None)
-    item_cost = models.FloatField()
+    item_cost = models.FloatField(validators=[validate_value])
     date_listed = models.DateField(auto_now=False, auto_now_add=False)
-    listing_fee = models.FloatField()
+    listing_fee = models.FloatField(validators=[validate_value])
 
     """User will fill out once item is sold"""
-    shipping_cost = models.FloatField(blank=True, null=True)
-    shipping_paid = models.FloatField(blank=True, null=True)
-    item_paid = models.FloatField(blank=True, null=True)
-    final_value_fee = models.FloatField(blank=True, null=True)
+    shipping_cost = models.FloatField(blank=True, null=True, validators=[validate_value])
+    shipping_paid = models.FloatField(blank=True, null=True, validators=[validate_value])
+    item_paid = models.FloatField(blank=True, null=True, validators=[validate_value])
+    final_value_fee = models.FloatField(blank=True, null=True, validators=[validate_value])
     sold_date = models.DateField(auto_now=False, auto_now_add=False, blank=True, null=True)
     returned = models.BooleanField(blank=True, null=True)
 
