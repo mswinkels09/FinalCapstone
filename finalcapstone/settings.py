@@ -25,7 +25,7 @@ SECRET_KEY = '*h+28_w&_r8*t%2s6%act^mt*t94igx-q9@t(lc%9o9^25c87t'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['www.profittrackerapp.com', 'localhost']
+ALLOWED_HOSTS = ['mswinkels.pythonanywhere.com', 'localhost']
 
 INSTALLED_APPS = [
     'django.contrib.admin',
